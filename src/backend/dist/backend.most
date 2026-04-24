@@ -1,0 +1,72 @@
+// Version: 3.0.0
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type ExternalBlob__671167343 = Blob;
+type Int__270357528 = Int__616954475;
+type Int__616954475 = Int;
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type JobId__339598917 = Text;
+type JobStatus__374926235 = {#completed; #failed; #processing; #queued};
+type Job__848768964 =
+  {
+    createdAt : Timestamp__301639476;
+    errorMsg : ?Text;
+    id : JobId__339598917;
+    inputImage : ExternalBlob__671167343;
+    inputImageUrl : Text;
+    motionIntensity : Nat;
+    outputVideoUrl : ?Text;
+    replicateId : ?Text;
+    status : JobStatus__374926235;
+    updatedAt : Timestamp__301639476;
+    userId : UserId__158757552
+  };
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type OldConfigState__746320437 =
+  {var modelId : Text; var modelVersion : Text; var replicateApiKey : ?Text};
+type OldJobStatus__421930301 = {#completed; #failed; #processing; #queued};
+type OldJob__973540862 =
+  {
+    createdAt : Timestamp__301639476;
+    errorMsg : ?Text;
+    id : JobId__339598917;
+    inputImage : Blob;
+    motionIntensity : Nat;
+    outputVideoUrl : ?Text;
+    replicateId : ?Text;
+    status : OldJobStatus__421930301;
+    updatedAt : Timestamp__301639476;
+    userId : UserId__158757552
+  };
+type OldJobsCounterState__707976551 = {var nextId : Nat};
+type Time__796480547 = Int__270357528;
+type Time__900049286 = Time__796480547;
+type Timestamp__301639476 = Time__900049286;
+type UserId__158757552 = Principal;
+actor ({
+  in config : OldConfigState__746320437;
+  in counter : OldJobsCounterState__707976551;
+  in jobs : Map__605269027<JobId__339598917, OldJob__973540862>
+}, {
+  stable config :
+    {
+      var modelId : Text;
+      var modelVersion : Text;
+      var replicateApiKey : ?Text
+    };
+  stable counter : {var nextId : Nat};
+  stable jobs :
+    {
+      var root : Node__46230540<JobId__339598917, Job__848768964>;
+      var size : Nat__490723111
+    }
+}) ;

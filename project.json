@@ -1,0 +1,26 @@
+{
+  "overview": "A professional image-to-video converter that transforms photos into smooth, realistic Full HD videos using AI-powered motion effects. Upload any image, choose your motion intensity, and get a cinematic video in seconds.",
+  "features": [
+    "Drag-and-drop image upload with preview",
+    "AI-powered video generation via Stable Video Diffusion (Replicate free tier)",
+    "Real-time job progress tracking (queued → processing → complete)",
+    "Full HD (1920×1080) MP4 video output",
+    "Inline video preview with HTML5 player",
+    "One-click video download",
+    "Job history dashboard with status filters",
+    "Motion intensity slider for customizing output",
+    "Light/dark mode toggle",
+    "Responsive layout for desktop and tablet"
+  ],
+  "category": "productivity",
+  "tags": [
+    "image-to-video",
+    "ai",
+    "video-generation",
+    "motion-effects",
+    "stable-video-diffusion",
+    "replicate",
+    "creative-tools"
+  ],
+  "last_updated": "2026-04-24T10:46:01.986Z"
+}

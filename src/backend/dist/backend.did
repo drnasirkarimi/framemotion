@@ -1,0 +1,93 @@
+type http_request_result = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type http_header = 
+ record {
+   name: text;
+   value: text;
+ };
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type UserId = principal;
+type TransformationOutput = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type TransformationInput = 
+ record {
+   context: blob;
+   response: http_request_result;
+ };
+type Timestamp = int;
+type JobStatus = 
+ variant {
+   completed;
+   failed;
+   processing;
+   queued;
+ };
+type JobListResult = 
+ record {
+   jobs: vec Job;
+   total: nat;
+ };
+type JobId = text;
+type Job = 
+ record {
+   createdAt: Timestamp;
+   errorMsg: opt text;
+   id: JobId;
+   inputImage: ExternalBlob;
+   inputImageUrl: text;
+   motionIntensity: nat;
+   outputVideoUrl: opt text;
+   replicateId: opt text;
+   status: JobStatus;
+   updatedAt: Timestamp;
+   userId: UserId;
+ };
+type ExternalBlob = blob;
+type Config = 
+ record {
+   modelId: text;
+   modelVersion: text;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  createJob: (inputImage: ExternalBlob, inputImageUrl: text, motionIntensity:
+   nat) -> (JobId);
+  deleteJob: (jobId: JobId) -> (bool);
+  getConfig: () -> (Config) query;
+  getJob: (jobId: JobId) -> (opt Job) query;
+  listJobs: (filter: opt JobStatus, limit: nat, offset: nat) ->
+   (JobListResult) query;
+  pollReplicateJob: (jobId: JobId) -> ();
+  setReplicateApiKey: (key: text) -> ();
+  transform: (input: TransformationInput) -> (TransformationOutput) query;
+  updateJobStatus: (jobId: JobId, status: JobStatus, outputVideoUrl:
+   opt text, errorMsg: opt text) -> ();
+}
